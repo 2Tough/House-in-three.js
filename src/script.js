@@ -58,12 +58,42 @@ const bushGeometry = new THREE.SphereBufferGeometry(1,16,16)
 const bushMaterial = new THREE.MeshStandardMaterial({ color: "#89c854"})
 
 const bush1 = new THREE.Mesh(bushGeometry, bushMaterial)
-bush1.position.y = 1
-bush1.position.set(1, 0.2,2.5)
+bush1.position.set(1.5, 0.2,2.5)
 bush1.scale.set(0.5,0.5,0.5)
 
-house.add(bush1)
+const bush2 = new THREE.Mesh(bushGeometry, bushMaterial)
+bush2.position.set(-1.5, 0.2,2.5)
+bush2.scale.set(0.5,0.5,0.5)
 
+const bush3 = new THREE.Mesh(bushGeometry, bushMaterial)
+bush3.position.set(-0.8, 0.2,2.5)
+bush3.scale.set(0.3,0.3,0.3)
+
+const bush4 = new THREE.Mesh(bushGeometry, bushMaterial)
+bush4.position.set(0.8, 0.2,2.5)
+bush4.scale.set(0.3,0.3,0.3)
+
+house.add(bush1, bush2, bush3, bush4)
+
+// Graves
+const graves = new THREE.Group()
+scene.add(graves)
+
+const graveGeometry = new THREE.BoxBufferGeometry(0.6,0.8,0.2)
+const graveMaterial = new THREE.MeshStandardMaterial({ color: "#b2b6b1"})
+
+for (let i = 0; i < 50; i++) {
+    const angle = Math.random() * Math.PI * 2
+    const radius = 3 + Math.random() * 6
+    const x = Math.sin(angle) * radius
+    const z = Math.cos(angle) * radius
+
+    const grave = new THREE.Mesh(graveGeometry, graveMaterial)
+    grave.position.set(x,0.4,z)
+    grave.rotation.y = (Math.random() - 0.5) * 0.5
+    grave.rotation.z = (Math.random() - 0.5) * 0.4
+    graves.add(grave)
+}
 
 // Floor
 const floor = new THREE.Mesh(
@@ -78,7 +108,7 @@ scene.add(floor)
  * Lights
  */
 // Ambient light
-const ambientLight = new THREE.AmbientLight('#ffffff', 0.5)
+const ambientLight = new THREE.AmbientLight('#b9d5ff', 0.12)
 gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
 scene.add(ambientLight)
 
@@ -90,6 +120,11 @@ gui.add(moonLight.position, 'x').min(- 5).max(5).step(0.001)
 gui.add(moonLight.position, 'y').min(- 5).max(5).step(0.001)
 gui.add(moonLight.position, 'z').min(- 5).max(5).step(0.001)
 scene.add(moonLight)
+
+// Door light
+const doorLight = new THREE.PointLight("#ff7d46", 1,7)
+doorLight.position.set(0,2.2,2.7)
+house.add(doorLight)
 
 /**
  * Sizes
